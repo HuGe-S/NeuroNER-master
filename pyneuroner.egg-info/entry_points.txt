@@ -1,0 +1,3 @@
+[console_scripts]
+neuroner = neuroner.__main__:main
+

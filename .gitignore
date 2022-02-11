@@ -6,6 +6,11 @@
 *.pydevproject
 output/*
 data/*
-
+python36/*
+neuroner/data/*
+neuroner/output/*
+neuroner/trained_models/*
+build/*
+trained_models/*
 # OS X file
 .DS_Store
