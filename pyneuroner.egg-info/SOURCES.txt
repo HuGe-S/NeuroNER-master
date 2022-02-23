@@ -11,6 +11,7 @@ neuroner/dataset.py
 neuroner/entity_lstm.py
 neuroner/evaluate.py
 neuroner/neuromodel.py
+neuroner/possibility_accum.py
 neuroner/prepare_pretrained_model.py
 neuroner/train.py
 neuroner/utils.py

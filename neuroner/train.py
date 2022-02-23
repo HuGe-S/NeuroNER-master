@@ -9,7 +9,7 @@ import sklearn.metrics
 import tensorflow as tf
 
 # from tensorflow.python.tools.inspect_checkpoint import print_tensors_in_checkpoint_file
-
+from neuroner import possibility_accum as pa
 from neuroner.evaluate import remap_labels
 from neuroner import utils_tf
 from neuroner import utils_nlp
@@ -194,6 +194,7 @@ def prediction_step(
                 pass
 
             output_string += " ".join(split_line) + "\n"
+            # Process data into a probability format by looking into dataset and output
 
         output_file.write(output_string + "\n")
 
@@ -290,4 +291,17 @@ def predict_labels(
         ) = prediction_output
         # print(y_pred, y_true)
 
+    if parameters["output_scores"]:
+        for dataset_type in ["train", "valid", "test", "deploy"]:
+            if dataset_type not in dataset_filepaths.keys():
+                continue
+            output_filepath = os.path.join(
+                stats_graph_folder, "{1:03d}_{0}.txt".format(dataset_type, epoch_number)
+            )
+            pa.AcumAll(
+                path=parameters["dataset_text_folder"],
+                mapdict=dataset.index_to_label,
+                outputstring=output_filepath,
+                dataset_type=dataset_type,
+            )
     return y_pred, y_true, output_filepaths
