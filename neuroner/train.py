@@ -120,6 +120,7 @@ def prediction_step(
         assert len(predictions) == len(dataset.tokens[dataset_type][i])
         # print(predictions)
         output_string = ""
+        output_string_score = ""
         prediction_labels = [
             dataset.index_to_label[prediction] for prediction in predictions
         ]
@@ -146,7 +147,6 @@ def prediction_step(
                 line = original_conll_file.readline()
                 # print(line)
                 split_line = line.strip().split(" ")
-
                 if (
                     "-DOCSTART-" in split_line[0]
                     or len(split_line) == 0
@@ -165,38 +165,24 @@ def prediction_step(
                     break
 
             split_line.append(prediction)
+            output_string += " ".join(split_line) + "\n"
             try:
                 if parameters["output_scores"]:
-                    # # space separated scores
-                    # N = 5
-
-                    # # Indices of N largest elements in list
-                    # # using sorted() + lambda + list slicing
-                    # res = sorted(range(len(scores)), key=lambda sub: scores[sub])[-N:]
-                    # topscores = []
-                    # # print(dataset.index_to_label[i])
-                    # # print(topscores)
-                    # for i in res:
-                    #     topscores.append(
-                    #         dataset.index_to_label[i]
-                    #         + " "
-                    #         + str("{:.1%}".format(scores[i]))
-                    #     )
-
-                    # scores = ",".join([i for i in topscores[::-1]])
-                    # split_line.append("," + "{}".format(scores))
+                    scorescopy = []
                     for i in range(len(scores)):
-                        scores[i] = "{}".format(scores[i])
-                    scores = " ".join([str(i) for i in scores])
-                    split_line.append("{}".format(scores))
+                        scorescopy.append("{}".format(scores[i]))
+                    scorescopy = " ".join([str(i) for i in scorescopy])
+                    split_line.append("{}".format(scorescopy))
 
             except KeyError:
                 pass
 
-            output_string += " ".join(split_line) + "\n"
+            output_string_score += " ".join(split_line) + "\n"
+
             # Process data into a probability format by looking into dataset and output
 
         output_file.write(output_string + "\n")
+        output_file_score.write(output_string_score + "\n")
 
         all_predictions.extend(predictions)
         all_y_true.extend(dataset.label_indices[dataset_type][i])
@@ -238,15 +224,15 @@ def prediction_step(
                 all_predictions, all_y_true, dataset, parameters["main_evaluation_mode"]
             )
 
-            print(
-                sklearn.metrics.classification_report(
-                    new_y_true,
-                    new_y_pred,
-                    digits=4,
-                    labels=new_label_indices,
-                    target_names=new_label_names,
-                )
-            )
+            # print(
+            #     sklearn.metrics.classification_report(
+            #         new_y_true,
+            #         new_y_pred,
+            #         digits=4,
+            #         labels=new_label_indices,
+            #         target_names=new_label_names,
+            #     )
+            # )
 
     return all_predictions, all_y_true, output_filepath
 
@@ -295,13 +281,14 @@ def predict_labels(
         for dataset_type in ["train", "valid", "test", "deploy"]:
             if dataset_type not in dataset_filepaths.keys():
                 continue
-            output_filepath = os.path.join(
-                stats_graph_folder, "{1:03d}_{0}.txt".format(dataset_type, epoch_number)
+            output_filepath_score = os.path.join(
+                stats_graph_folder,
+                "{1:03d}_{0}_score.txt".format(dataset_type, epoch_number),
             )
             pa.AcumAll(
                 path=parameters["dataset_text_folder"],
                 mapdict=dataset.index_to_label,
-                outputstring=output_filepath,
+                outputstring=output_filepath_score,
                 dataset_type=dataset_type,
             )
     return y_pred, y_true, output_filepaths
