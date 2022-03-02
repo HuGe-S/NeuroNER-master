@@ -890,17 +890,19 @@ class NeuroNER(object):
                 )
 
                 # Evaluate model: save and plot results
-                # evaluate.evaluate_model(
-                #     results,
-                #     modeldata,
-                #     y_pred,
-                #     y_true,
-                #     stats_graph_folder,
-                #     epoch_number,
-                #     epoch_start_time,
-                #     output_filepaths,
-                #     parameters,
-                # )
+                if not parameters["output_scores"]:
+                    evaluate.evaluate_model(
+                        results,
+                        modeldata,
+                        y_pred,
+                        y_true,
+                        stats_graph_folder,
+                        epoch_number,
+                        epoch_start_time,
+                        output_filepaths,
+                        parameters,
+                    )
+                    evaluate.save_results(results, stats_graph_folder)
 
                 if parameters["use_pretrained_model"] and not parameters["train_model"]:
                     conll_to_brat.output_brat(
@@ -960,7 +962,7 @@ class NeuroNER(object):
         end_time = time.time()
         results["execution_details"]["train_duration"] = end_time - start_time
         results["execution_details"]["train_end"] = end_time
-        # evaluate.save_results(results, stats_graph_folder)
+
         for dataset_type in dataset_filepaths.keys():
             writers[dataset_type].close()
 

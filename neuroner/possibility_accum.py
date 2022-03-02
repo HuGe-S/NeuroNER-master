@@ -103,7 +103,7 @@ def PossibilityAcum(
     path = path + "//" + setname
 
     Mapdict = Mapdict.items()
-    print(Mapdict)
+    # print(Mapdict)
     # Change the directory
     path = os.path.abspath(path)
 
@@ -145,7 +145,7 @@ def PossibilityAcum(
             print(categories[i])
             mapcount = mapcount + 1
     categories = categories[0:mapcount]
-    print(categories)
+    # print(categories)
     for i in range(len(categories)):
         categories[i] = categories[i][1]
         categories[i] = categories[i][2:]
@@ -166,11 +166,11 @@ def PossibilityAcum(
     possibilitystore = []
     flag = 0
     outline = []
-
+    print(len(rawlines))
     sentenceindex = 0
     rawsentence = rawlines[sentenceindex].split()
-    print(len(words))
-    print(len(possibility))
+    # print(len(words))
+    # print(len(possibility))
     index = 0
     while words:
         if rawsentence:
@@ -252,12 +252,13 @@ def PossibilityAcum(
         for line in outline:
             file.write(line.encode())
             file.write("\n".encode())
+    return outline
     # print(words)
     # print(len(possibility[0]))
 
 
 def AcumAll(path, mapdict, outputstring, dataset_type):
-    PossibilityAcum(
+    return PossibilityAcum(
         outputstring=outputstring,
         Mapdict=mapdict,
         path=path,

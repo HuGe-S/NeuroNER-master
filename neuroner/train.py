@@ -10,6 +10,7 @@ import tensorflow as tf
 
 # from tensorflow.python.tools.inspect_checkpoint import print_tensors_in_checkpoint_file
 from neuroner import possibility_accum as pa
+from neuroner import evaluation as ev
 from neuroner.evaluate import remap_labels
 from neuroner import utils_tf
 from neuroner import utils_nlp
@@ -285,10 +286,17 @@ def predict_labels(
                 stats_graph_folder,
                 "{1:03d}_{0}_score.txt".format(dataset_type, epoch_number),
             )
-            pa.AcumAll(
+            outputline = pa.AcumAll(
                 path=parameters["dataset_text_folder"],
                 mapdict=dataset.index_to_label,
                 outputstring=output_filepath_score,
                 dataset_type=dataset_type,
+            )
+            ev.accumEval(
+                path=parameters["dataset_text_folder"],
+                Mapdict=dataset.index_to_label,
+                outputstring=output_filepath_score,
+                setname=dataset_type,
+                resultlines=outputline,
             )
     return y_pred, y_true, output_filepaths

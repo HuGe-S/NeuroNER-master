@@ -10,6 +10,7 @@ neuroner/conlleval
 neuroner/dataset.py
 neuroner/entity_lstm.py
 neuroner/evaluate.py
+neuroner/evaluation.py
 neuroner/neuromodel.py
 neuroner/possibility_accum.py
 neuroner/prepare_pretrained_model.py
