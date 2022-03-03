@@ -30,7 +30,7 @@ def accumEval(
     # process input lines
     predicttextlst = []
     predictresultlst = []
-    print(len(resultlines))
+    # print(len(resultlines))
     countre = 0
     for i in resultlines:
         countre += 1

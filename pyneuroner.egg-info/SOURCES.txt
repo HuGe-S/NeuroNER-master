@@ -27,7 +27,6 @@ neuroner/data/example_unannotated_texts/deploy/news.txt
 neuroner/data/example_unannotated_texts/deploy/some_random_text.txt
 neuroner/data/i2b2_2014_deid/readme.md
 neuroner/data/i2b2_2014_deid/xml_to_brat.py
-neuroner/data/i2b2_2014_deid/__pycache__/xml_to_brat.cpython-36.pyc
 neuroner/trained_models/performances.md
 neuroner/trained_models/conll_2003_en/dataset.pickle
 neuroner/trained_models/conll_2003_en/model.ckpt.data-00000-of-00001

@@ -253,8 +253,6 @@ def PossibilityAcum(
             file.write(line.encode())
             file.write("\n".encode())
     return outline
-    # print(words)
-    # print(len(possibility[0]))
 
 
 def AcumAll(path, mapdict, outputstring, dataset_type):
